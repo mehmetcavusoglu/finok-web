@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>finok — Finansı öğren, piyasayı anla</title>
+  <meta name="description" content="Hisse, kripto, bono ve kişisel finans. Günlük dersler, quiz'ler ve lig sistemiyle finansı gerçekten öğren." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f1f3d;
+      --teal: #1a9e8f;
+      --teal-light: #2ec4b0;
+      --mint: #a8eddf;
+      --cream: #f8f5f0;
+      --white: #ffffff;
+      --text: #1a1a2e;
+      --muted: #6b7a8d;
+      --gold: #f5c842;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(248, 245, 240, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(26, 158, 143, 0.1);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--navy), var(--teal));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-logo-icon svg { width: 20px; height: 20px; }
+
+    .nav-logo-text {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--teal); }
+
+    .nav-cta {
+      background: var(--navy);
+      color: var(--white) !important;
+      padding: 10px 22px;
+      border-radius: 100px;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      transition: background 0.2s, transform 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--teal) !important;
+      color: var(--white) !important;
+      transform: translateY(-1px);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 40px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-bg-circle1 {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(26, 158, 143, 0.12) 0%, transparent 70%);
+      top: -100px;
+      right: -100px;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .hero-bg-circle2 {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(15, 31, 61, 0.06) 0%, transparent 70%);
+      bottom: 0;
+      left: -80px;
+      animation: float 10s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(26, 158, 143, 0.1);
+      border: 1px solid rgba(26, 158, 143, 0.2);
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+      letter-spacing: 0.3px;
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(38px, 5vw, 58px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -1.5px;
+      color: var(--navy);
+      margin-bottom: 24px;
+    }
+
+    .hero-title .accent {
+      background: linear-gradient(135deg, var(--teal), var(--teal-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-weight: 300;
+      margin-bottom: 40px;
+      max-width: 440px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--navy), #1a3060);
+      color: var(--white);
+      text-decoration: none;
+      padding: 16px 28px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(15, 31, 61, 0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(15, 31, 61, 0.35);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      color: var(--navy);
+      text-decoration: none;
+      padding: 16px 28px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      border: 2px solid rgba(15, 31, 61, 0.15);
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+      background: rgba(26, 158, 143, 0.05);
+    }
+
+    .store-badges {
+      display: flex;
+      gap: 12px;
+      margin-top: 36px;
+      flex-wrap: wrap;
+    }
+
+    .store-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--navy);
+      color: var(--white);
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .store-badge:hover {
+      transform: translateY(-2px);
+      background: var(--teal);
+    }
+
+    .store-badge-icon { font-size: 22px; }
+
+    .store-badge-text { display: flex; flex-direction: column; }
+    .store-badge-sub { font-size: 10px; opacity: 0.7; font-weight: 400; }
+    .store-badge-name { font-size: 14px; font-weight: 600; line-height: 1.2; }
+
+    /* PHONE MOCKUP */
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .phone-wrap {
+      position: relative;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .phone {
+      width: 260px;
+      height: 520px;
+      background: linear-gradient(160deg, var(--navy) 0%, #0a3d5c 50%, var(--teal) 100%);
+      border-radius: 40px;
+      padding: 24px 20px;
+      box-shadow:
+        0 40px 80px rgba(15, 31, 61, 0.35),
+        0 0 0 1px rgba(255,255,255,0.08) inset,
+        0 1px 0 rgba(255,255,255,0.15) inset;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phone::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 28px;
+      background: var(--navy);
+      border-radius: 0 0 20px 20px;
+      z-index: 10;
+    }
+
+    .phone-screen {
+      background: var(--cream);
+      border-radius: 28px;
+      height: 100%;
+      overflow: hidden;
+      padding: 40px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .phone-greeting {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .phone-stat-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .phone-stat {
+      flex: 1;
+      background: white;
+      border-radius: 12px;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .phone-stat-icon { font-size: 16px; }
+    .phone-stat-val { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800; color: var(--navy); }
+    .phone-stat-label { font-size: 8px; color: var(--muted); font-weight: 500; }
+
+    .phone-league {
+      background: var(--navy);
+      border-radius: 14px;
+      padding: 12px;
+      color: white;
+    }
+
+    .phone-league-label { font-size: 8px; opacity: 0.6; font-weight: 600; letter-spacing: 0.5px; }
+    .phone-league-name { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; margin-top: 2px; }
+    .phone-league-sub { font-size: 9px; opacity: 0.6; margin-top: 2px; }
+
+    .phone-premium {
+      background: linear-gradient(135deg, #667eea, var(--teal));
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+    }
+
+    .phone-premium-icon { font-size: 18px; }
+    .phone-premium-text { flex: 1; }
+    .phone-premium-title { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; }
+    .phone-premium-sub { font-size: 9px; opacity: 0.8; }
+
+    .phone-tabs {
+      display: flex;
+      justify-content: space-around;
+      margin-top: auto;
+      background: white;
+      border-radius: 16px;
+      padding: 10px 0;
+    }
+
+    .phone-tab { font-size: 18px; }
+
+    /* floating cards */
+    .float-card {
+      position: absolute;
+      background: white;
+      border-radius: 16px;
+      padding: 12px 16px;
+      box-shadow: 0 8px 32px rgba(15, 31, 61, 0.12);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .float-card-1 {
+      top: 60px;
+      right: -60px;
+      animation: float 7s ease-in-out infinite 1s;
+    }
+
+    .float-card-2 {
+      bottom: 100px;
+      left: -70px;
+      animation: float 9s ease-in-out infinite 2s;
+    }
+
+    .float-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+
+    /* FEATURES */
+    .features {
+      padding: 100px 40px;
+      background: var(--white);
+    }
+
+    .section-label {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--teal);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      text-align: center;
+      color: var(--navy);
+      letter-spacing: -1px;
+      margin-bottom: 60px;
+    }
+
+    .features-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--cream);
+      border-radius: 24px;
+      padding: 36px 32px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(15, 31, 61, 0.1);
+    }
+
+    .feature-icon {
+      font-size: 36px;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .feature-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+
+    .feature-desc {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* TOPICS */
+    .topics {
+      padding: 100px 40px;
+      background: var(--cream);
+    }
+
+    .topics-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .topic-card {
+      background: linear-gradient(135deg, var(--navy), #1a4060);
+      border-radius: 20px;
+      padding: 28px 24px;
+      color: white;
+      transition: transform 0.3s;
+    }
+
+    .topic-card:hover { transform: translateY(-3px); }
+
+    .topic-card:nth-child(2) { background: linear-gradient(135deg, var(--teal), #0a7a6e); }
+    .topic-card:nth-child(3) { background: linear-gradient(135deg, #2d3561, #1a2040); }
+    .topic-card:nth-child(4) { background: linear-gradient(135deg, #1a5c4a, var(--teal)); }
+
+    .topic-icon { font-size: 28px; margin-bottom: 14px; display: block; }
+    .topic-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .topic-count { font-size: 12px; opacity: 0.65; }
+
+    /* PRICING */
+    .pricing {
+      padding: 100px 40px;
+      background: var(--white);
+    }
+
+    .pricing-cards {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .pricing-card {
+      border-radius: 24px;
+      padding: 40px 36px;
+      position: relative;
+    }
+
+    .pricing-free {
+      background: var(--cream);
+      border: 2px solid rgba(15, 31, 61, 0.08);
+    }
+
+    .pricing-premium {
+      background: linear-gradient(160deg, var(--navy) 0%, #0a3d5c 100%);
+      color: white;
+      box-shadow: 0 24px 64px rgba(15, 31, 61, 0.3);
+    }
+
+    .pricing-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .pricing-plan {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      opacity: 0.6;
+    }
+
+    .pricing-price {
+      font-family: 'Syne', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .pricing-period {
+      font-size: 14px;
+      opacity: 0.5;
+      margin-bottom: 28px;
+    }
+
+    .pricing-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pricing-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .pricing-free .pricing-features li { color: var(--text); }
+    .pricing-premium .pricing-features li { color: rgba(255,255,255,0.85); }
+
+    .check { color: var(--teal); font-weight: 700; }
+    .pricing-premium .check { color: var(--mint); }
+
+    /* FOOTER */
+    footer {
+      background: var(--navy);
+      color: white;
+      padding: 60px 40px 40px;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      margin-bottom: 12px;
+    }
+
+    .footer-logo-icon {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-logo-text {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: white;
+    }
+
+    .footer-tagline {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      max-width: 220px;
+      line-height: 1.6;
+    }
+
+    .footer-links { display: flex; flex-direction: column; gap: 12px; }
+    .footer-links a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--teal-light); }
+
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 40px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* ANIMATIONS */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 20px 60px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .hero-visual { display: none; }
+      .features { padding: 60px 20px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .topics { padding: 60px 20px; }
+      .topics-grid { grid-template-columns: repeat(2, 1fr); }
+      .pricing { padding: 60px 20px; }
+      .pricing-cards { grid-template-columns: 1fr; }
+      footer { padding: 40px 20px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="10" width="3" height="8" rx="1" fill="#2ec4b0"/>
+          <rect x="7" y="6" width="3" height="12" rx="1" fill="#a8eddf"/>
+          <rect x="12" y="2" width="3" height="16" rx="1" fill="white"/>
+          <path d="M2 10 L7 6 L12 2" stroke="#f5c842" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="nav-logo-text">finok</span>
+    </a>
+    <div class="nav-links">
+      <a href="#ozellikler">Özellikler</a>
+      <a href="#konular">Konular</a>
+      <a href="#fiyat">Fiyat</a>
+      <a href="privacy.html">Gizlilik</a>
+      <a href="#indir" class="nav-cta">İndir</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-bg-circle1"></div>
+      <div class="hero-bg-circle2"></div>
+    </div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge">
+          📈 Türkiye'nin finans eğitim uygulaması
+        </div>
+        <h1 class="hero-title">
+          Finansı öğren,<br>
+          <span class="accent">piyasayı anla.</span>
+        </h1>
+        <p class="hero-sub">
+          Günlük dersler, quiz'ler ve lig sistemiyle hisse, kripto, bono ve kişisel finansı gerçekten öğren. Her gün 10 dakika yeterli.
+        </p>
+        <div class="store-badges" id="indir">
+          <a href="https://apps.apple.com/app/finok/id6738796191" class="store-badge">
+            <span class="store-badge-icon"></span>
+            <span class="store-badge-text">
+              <span class="store-badge-sub">App Store'dan İndir</span>
+              <span class="store-badge-name">iPhone & iPad</span>
+            </span>
+          </a>
+          <a href="https://play.google.com/store/apps/details?id=com.mehmetcavusoglu.finok" class="store-badge">
+            <span class="store-badge-icon">🤖</span>
+            <span class="store-badge-text">
+              <span class="store-badge-sub">Google Play'den İndir</span>
+              <span class="store-badge-name">Android</span>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="phone-wrap">
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="phone-greeting">İyi günler, Deneme 👋</div>
+              <div class="phone-stat-row">
+                <div class="phone-stat">
+                  <div class="phone-stat-icon">⚡</div>
+                  <div class="phone-stat-val">0</div>
+                  <div class="phone-stat-label">XP</div>
+                </div>
+                <div class="phone-stat">
+                  <div class="phone-stat-icon">❤️</div>
+                  <div class="phone-stat-val">5</div>
+                  <div class="phone-stat-label">CAN</div>
+                </div>
+                <div class="phone-stat">
+                  <div class="phone-stat-icon">🎯</div>
+                  <div class="phone-stat-val">0</div>
+                  <div class="phone-stat-label">HATA</div>
+                </div>
+              </div>
+              <div class="phone-league">
+                <div class="phone-league-label">HAFTALIK LİG</div>
+                <div class="phone-league-name">Bronze3</div>
+                <div class="phone-league-sub">Sıralamayı gör →</div>
+              </div>
+              <div class="phone-premium">
+                <div class="phone-premium-icon">✨</div>
+                <div class="phone-premium-text">
+                  <div class="phone-premium-title">finok Premium</div>
+                  <div class="phone-premium-sub">200 TL/ay · sınırsız erişim</div>
+                </div>
+              </div>
+              <div class="phone-tabs">
+                <span class="phone-tab">🏠</span>
+                <span class="phone-tab">📚</span>
+                <span class="phone-tab">🔄</span>
+                <span class="phone-tab">📰</span>
+              </div>
+            </div>
+          </div>
+          <div class="float-card float-card-1">
+            <div class="float-dot"></div>
+            +100 XP kazandın!
+          </div>
+          <div class="float-card float-card-2">
+            🔥 3 günlük seri!
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="ozellikler">
+    <div class="section-label">Neden finok?</div>
+    <h2 class="section-title">Öğrenmek bu kadar eğlenceli olabilir</h2>
+    <div class="features-grid">
+      <div class="feature-card fade-up">
+        <span class="feature-icon">📚</span>
+        <div class="feature-title">Günlük Dersler</div>
+        <p class="feature-desc">Hisse, kripto, bono, teknik analiz ve kişisel finans. Her ders 10 dakikada tamamlanır, quiz'lerle pekiştirilir.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <span class="feature-icon">🏆</span>
+        <div class="feature-title">Haftalık Lig</div>
+        <p class="feature-desc">Bronze'dan Diamond'a yükselen lig sistemi. Haftanın en çok XP kazanan kullanıcısı ligde kalır, diğerleri düşer.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <span class="feature-icon">🎯</span>
+        <div class="feature-title">Hata Laboratuvarı</div>
+        <p class="feature-desc">Yanlış cevaplarını akıllı sırayla tekrar et. En çok tekrar gerektiren sorular önce gelir.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <span class="feature-icon">📰</span>
+        <div class="feature-title">Finans Blogu</div>
+        <p class="feature-desc">Dünya krizleri, yatırım efsaneleri, şirket hikayeleri. Okuma ilerlemeni takip et, bilgini derinleştir.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <span class="feature-icon">🔥</span>
+        <div class="feature-title">Günlük Seri</div>
+        <p class="feature-desc">Her gün giriş yap, serini koru. Streak taahhütleriyle hedeflerine sadık kal.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <span class="feature-icon">🔔</span>
+        <div class="feature-title">Akıllı Hatırlatıcılar</div>
+        <p class="feature-desc">Lig bitimine, can yenilenmesine ve günlük dersine özel bildirimler. Hiçbir şeyi kaçırmaz.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOPICS -->
+  <section class="topics" id="konular">
+    <div class="section-label">İçerik</div>
+    <h2 class="section-title">98 ders, 4 ana kategori</h2>
+    <div class="topics-grid">
+      <div class="topic-card fade-up">
+        <span class="topic-icon">💼</span>
+        <div class="topic-name">Kişisel Finans</div>
+        <div class="topic-count">20 ders · Borç, vergi, emeklilik</div>
+      </div>
+      <div class="topic-card fade-up">
+        <span class="topic-icon">📈</span>
+        <div class="topic-name">Yatırım</div>
+        <div class="topic-count">26 ders · Hisse, fon, kripto</div>
+      </div>
+      <div class="topic-card fade-up">
+        <span class="topic-icon">🕯️</span>
+        <div class="topic-name">Teknik Analiz</div>
+        <div class="topic-count">23 ders · Grafik, formasyon</div>
+      </div>
+      <div class="topic-card fade-up">
+        <span class="topic-icon">📊</span>
+        <div class="topic-name">Temel Analiz</div>
+        <div class="topic-count">29 ders · Bilanço, değerleme</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="fiyat">
+    <div class="section-label">Fiyat</div>
+    <h2 class="section-title">Ücretsiz başla, istersen yükselt</h2>
+    <div class="pricing-cards">
+      <div class="pricing-card pricing-free fade-up">
+        <div class="pricing-plan">Ücretsiz</div>
+        <div class="pricing-price">₺0</div>
+        <div class="pricing-period">sonsuza dek</div>
+        <ul class="pricing-features">
+          <li><span class="check">✓</span> Günlük 3 ders</li>
+          <li><span class="check">✓</span> 5 can hakkı</li>
+          <li><span class="check">✓</span> Haftalık lig</li>
+          <li><span class="check">✓</span> Hata Laboratuvarı</li>
+          <li><span class="check">✓</span> Günde 3 blog yazısı</li>
+        </ul>
+      </div>
+      <div class="pricing-card pricing-premium fade-up">
+        <div class="pricing-badge">✨ Premium</div>
+        <div class="pricing-plan" style="color:rgba(255,255,255,0.5)">Aylık</div>
+        <div class="pricing-price">₺200</div>
+        <div class="pricing-period">/ay · dilediğin zaman iptal</div>
+        <ul class="pricing-features">
+          <li><span class="check">✓</span> Sınırsız ders</li>
+          <li><span class="check">✓</span> Sınırsız can</li>
+          <li><span class="check">✓</span> Sınırsız blog</li>
+          <li><span class="check">✓</span> Deep Dive & Uzman modüller</li>
+          <li><span class="check">✓</span> Öncelikli destek</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <a href="/" class="footer-logo">
+          <div class="footer-logo-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <rect x="2" y="10" width="3" height="8" rx="1" fill="#2ec4b0"/>
+              <rect x="7" y="6" width="3" height="12" rx="1" fill="#a8eddf"/>
+              <rect x="12" y="2" width="3" height="16" rx="1" fill="white"/>
+            </svg>
+          </div>
+          <span class="footer-logo-text">finok</span>
+        </a>
+        <p class="footer-tagline">Finansı öğren, piyasayı anla. Her gün 10 dakika.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#ozellikler">Özellikler</a>
+        <a href="#konular">Konular</a>
+        <a href="#fiyat">Fiyat</a>
+      </div>
+      <div class="footer-links">
+        <a href="privacy.html">Gizlilik Politikası</a>
+        <a href="mailto:destek@finok.net">destek@finok.net</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 finok. Tüm hakları saklıdır.</span>
+      <span>Türkiye 🇹🇷</span>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
